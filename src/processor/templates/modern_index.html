@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SearchEngine - Modern Web Search</title>
+    <meta name="description" content="Fast, accurate web search using advanced information retrieval techniques">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modern_style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='smart_features.css') }}">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
+    
+    <style>
+        /* Additional inline styles for enhanced features */
+        .search-demo-hints {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .demo-hints-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .demo-examples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        
+        .demo-example {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .demo-example:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .feature-badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        .feature-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .welcome-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: #5f6368;
+        }
+        
+        .welcome-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+        
+        .welcome-title {
+            font-size: 28px;
+            font-weight: 300;
+            margin-bottom: 10px;
+            color: #202124;
+        }
+        
+        .welcome-subtitle {
+            font-size: 16px;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e8eaed;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .feature-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #202124;
+        }
+        
+        .feature-description {
+            font-size: 14px;
+            color: #5f6368;
+            line-height: 1.5;
+        }
+        
+        .quick-search-section {
+            background: #f8f9fa;
+            padding: 40px 20px;
+            margin-top: 40px;
+            border-radius: 12px;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 30px;
+            color: #202124;
+        }
+        
+        .search-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .search-category {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #e8eaed;
+        }
+        
+        .search-category:hover {
+            background: #e8f0fe;
+            border-color: #1a73e8;
+            transform: translateY(-2px);
+        }
+        
+        .category-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .category-name {
+            font-weight: 500;
+            color: #202124;
+            margin-bottom: 5px;
+        }
+        
+        .category-count {
+            font-size: 12px;
+            color: #5f6368;
+        }
+        
+        @media (max-width: 768px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-categories {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .welcome-title {
+                font-size: 24px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .search-categories {
+                grid-template-columns: 1fr;
+            }
+            
+            .demo-examples {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <div class="logo-icon">S</div>
+                    <div class="logo-text">SearchEngine</div>
+                </a>
+                
+                <div class="search-container">
+                    <form id="searchForm" class="search-form">
+                        <div class="search-input-group">
+                            <input type="text" id="searchInput" class="search-input" 
+                                   placeholder="Search the web..." autocomplete="off"
+                                   aria-label="Search query">
+                            <button type="submit" class="search-button" aria-label="Search">
+                                <svg class="search-icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div id="suggestions" class="suggestions"></div>
+                    </form>
+                </div>
+                
+                <button id="advancedToggle" class="advanced-toggle" aria-expanded="false">
+                    Advanced Search
+                </button>
+            </div>
+            
+            <!-- Advanced Search Fields -->
+            <div id="advancedFields" class="advanced-fields" aria-hidden="true">
+                <div class="form-group">
+                    <label for="topK">Results per page:</label>
+                    <select id="topK">
+                        <option value="10">10 results</option>
+                        <option value="20">20 results</option>
+                        <option value="50">50 results</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="searchType">Search type:</label>
+                    <select id="searchType">
+                        <option value="standard">Standard</option>
+                        <option value="boolean">Boolean</option>
+                        <option value="phrase">Phrase</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="spellCheck">
+                        <input type="checkbox" id="spellCheck" checked>
+                        Enable Spell Check
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="queryExpansion">
+                        <input type="checkbox" id="queryExpansion" checked>
+                        Enable Query Expansion
+                    </label>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Smart Features Panel -->
+    <div id="smartFeaturesPanel" class="smart-features-panel hidden">
+        <div class="smart-features-header">
+            <h4>🧠 Smart Search Features</h4>
+            <button class="close-panel" onclick="searchEngine.hideSmartFeatures()">×</button>
+        </div>
+        <div class="smart-features-content">
+            <div id="spellCheckInfo" class="feature-info hidden">
+                <div class="feature-icon">🔤</div>
+                <div class="feature-details">
+                    <strong>Spell Check Applied</strong>
+                    <div class="correction-details"></div>
+                </div>
+            </div>
+            <div id="expansionInfo" class="feature-info hidden">
+                <div class="feature-icon">🔍</div>
+                <div class="feature-details">
+                    <strong>Query Expanded</strong>
+                    <div class="expansion-details"></div>
+                </div>
+            </div>
+            <div id="suggestionsInfo" class="feature-info hidden">
+                <div class="feature-icon">💡</div>
+                <div class="feature-details">
+                    <strong>Search Suggestions</strong>
+                    <div class="suggestion-details"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Welcome Section (Shown when no search) -->
+        <div id="welcomeSection" class="welcome-message">
+            <div class="welcome-icon">🔍</div>
+            <h1 class="welcome-title">SearchEngine - Intelligent Web Search</h1>
+            <p class="welcome-subtitle">
+                Experience the power of modern information retrieval with smart features including 
+                real-time spell checking, query expansion, and intelligent suggestions.
+            </p>
+            
+            <!-- Feature Badges -->
+            <div class="feature-badges">
+                <div class="feature-badge">🔤 Smart Spell Check</div>
+                <div class="feature-badge">🔍 Query Expansion</div>
+                <div class="feature-badge">💡 Real-time Suggestions</div>
+                <div class="feature-badge">⚡ Fast Results</div>
+            </div>
+
+            <!-- Demo Hints -->
+            <div class="search-demo-hints">
+                <div class="demo-hints-title">
+                    <span>🎯 Try these examples to see smart features in action:</span>
+                </div>
+                <div class="demo-examples">
+                    <div class="demo-example" onclick="searchEngine.demoSearch('serch engin')">
+                        "serch engin" → Spell Check
+                    </div>
+                    <div class="demo-example" onclick="searchEngine.demoSearch('car')">
+                        "car" → Query Expansion
+                    </div>
+                    <div class="demo-example" onclick="searchEngine.demoSearch('web crawlin')">
+                        "web crawlin" → Auto-correct
+                    </div>
+                    <div class="demo-example" onclick="searchEngine.demoSearch('python programing')">
+                        "python programing" → Fix spelling
+                    </div>
+                    <div class="demo-example" onclick="searchEngine.demoSearch('machine')">
+                        "machine" → Get suggestions
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔤</div>
+                    <h3 class="feature-title">Smart Spell Check</h3>
+                    <p class="feature-description">
+                        Automatically corrects spelling mistakes in real-time. Try typing 
+                        "serch engin" to see it corrected to "search engine".
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3 class="feature-title">Query Expansion</h3>
+                    <p class="feature-description">
+                        Expands your search with related terms and synonyms. Search for "car" 
+                        and it will also look for "automobile", "vehicle", and "auto".
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3 class="feature-title">Real-time Suggestions</h3>
+                    <p class="feature-description">
+                        Get intelligent search suggestions as you type. Start typing "web" 
+                        to see suggestions like "web crawling" and "web scraping".
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Fast & Relevant</h3>
+                    <p class="feature-description">
+                        Powered by advanced TF-IDF and cosine similarity algorithms to 
+                        deliver the most relevant results instantly.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quick Search Section -->
+            <div class="quick-search-section">
+                <h2 class="section-title">Popular Search Categories</h2>
+                <div class="search-categories">
+                    <div class="search-category" onclick="searchEngine.demoSearch('search engine')">
+                        <span class="category-icon">🔍</span>
+                        <div class="category-name">Search Engines</div>
+                        <div class="category-count">12 documents</div>
+                    </div>
+                    
+                    <div class="search-category" onclick="searchEngine.demoSearch('web crawling')">
+                        <span class="category-icon">🕷️</span>
+                        <div class="category-name">Web Crawling</div>
+                        <div class="category-count">8 documents</div>
+                    </div>
+                    
+                    <div class="search-category" onclick="searchEngine.demoSearch('information retrieval')">
+                        <span class="category-icon">📊</span>
+                        <div class="category-name">Information Retrieval</div>
+                        <div class="category-count">15 documents</div>
+                    </div>
+                    
+                    <div class="search-category" onclick="searchEngine.demoSearch('machine learning')">
+                        <span class="category-icon">🤖</span>
+                        <div class="category-name">Machine Learning</div>
+                        <div class="category-count">20 documents</div>
+                    </div>
+                    
+                    <div class="search-category" onclick="searchEngine.demoSearch('python programming')">
+                        <span class="category-icon">🐍</span>
+                        <div class="category-name">Python Programming</div>
+                        <div class="category-count">18 documents</div>
+                    </div>
+                    
+                    <div class="search-category" onclick="searchEngine.demoSearch('flask framework')">
+                        <span class="category-icon">🌐</span>
+                        <div class="category-name">Web Frameworks</div>
+                        <div class="category-count">10 documents</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loading" class="loading hidden">
+            <div class="loading-spinner"></div>
+            <p>Searching the web with smart features...</p>
+        </div>
+
+        <!-- Results Container -->
+        <div id="resultsContainer" class="results-container">
+            <!-- Results will be inserted here -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">&copy; 2025 SearchEngine. Powered by advanced information retrieval technology.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='modern_script.js') }}"></script>
+    <script src="{{ url_for('static', filename='smart_search.js') }}"></script>
+    
+    <script>
+        // Enhanced SmartSearchEngine class with demo functionality
+        class EnhancedSmartSearchEngine extends SmartSearchEngine {
+            constructor() {
+                super();
+                this.welcomeSection = document.getElementById('welcomeSection');
+                this.initializeDemoFeatures();
+            }
+            
+            initializeDemoFeatures() {
+                // Add event listeners for advanced options
+                const spellCheckToggle = document.getElementById('spellCheck');
+                const expansionToggle = document.getElementById('queryExpansion');
+                
+                if (spellCheckToggle) {
+                    spellCheckToggle.addEventListener('change', (e) => {
+                        this.smartFeaturesEnabled = e.target.checked;
+                        console.log('Spell check:', e.target.checked ? 'enabled' : 'disabled');
+                    });
+                }
+                
+                if (expansionToggle) {
+                    expansionToggle.addEventListener('change', (e) => {
+                        console.log('Query expansion:', e.target.checked ? 'enabled' : 'disabled');
+                    });
+                }
+            }
+            
+            demoSearch(query) {
+                this.searchInput.value = query;
+                this.performSearch(query);
+                this.hideWelcomeSection();
+            }
+            
+            hideWelcomeSection() {
+                if (this.welcomeSection) {
+                    this.welcomeSection.style.display = 'none';
+                }
+            }
+            
+            showWelcomeSection() {
+                if (this.welcomeSection) {
+                    this.welcomeSection.style.display = 'block';
+                }
+            }
+            
+            displayResults(data) {
+                this.hideWelcomeSection();
+                super.displayResults(data);
+            }
+            
+            clearResults() {
+                super.clearResults();
+                this.showWelcomeSection();
+            }
+            
+            // Override performSearch to include advanced options
+            async performSearch(query, updateHistory = true) {
+                this.showLoading();
+                this.hideSuggestions();
+                this.hideWelcomeSection();
+                
+                // Update browser history
+                if (updateHistory) {
+                    window.history.pushState({ query: query }, '', `?q=${encodeURIComponent(query)}`);
+                }
+                
+                this.lastSearchTime = Date.now();
+                
+                try {
+                    // Build query parameters with advanced options
+                    const params = new URLSearchParams();
+                    params.append('q', query);
+                    
+                    // Add advanced options
+                    const topK = document.getElementById('topK')?.value;
+                    const searchType = document.getElementById('searchType')?.value;
+                    const spellCheck = document.getElementById('spellCheck')?.checked;
+                    const expansion = document.getElementById('queryExpansion')?.checked;
+                    
+                    if (topK && topK !== '10') {
+                        params.append('top_k', topK);
+                    }
+                    if (searchType && searchType !== 'standard') {
+                        params.append('type', searchType);
+                    }
+                    if (spellCheck !== undefined) {
+                        params.append('spell_check', spellCheck);
+                    }
+                    if (expansion !== undefined) {
+                        params.append('expansion', expansion);
+                    }
+                    
+                    const response = await fetch(`/search?${params.toString()}`);
+                    const data = await response.json();
+                    
+                    this.displayResults(data);
+                    this.showSmartFeaturesSummary(data);
+                    
+                } catch (error) {
+                    this.displayError('Search failed: ' + error.message);
+                } finally {
+                    this.hideLoading();
+                }
+            }
+            
+            // Enhanced smart features summary
+            showSmartFeaturesSummary(data) {
+                if (!data.smart_features) return;
+                
+                const features = data.smart_features;
+                let summary = [];
+                
+                if (features.spell_check_used) {
+                    summary.push(`🔤 Corrected "${features.original_query}" to "${data.processed_query}"`);
+                }
+                
+                if (features.query_expansion_used) {
+                    summary.push(`🔍 Expanded with: ${features.expansions_applied.join(', ')}`);
+                }
+                
+                if (summary.length > 0) {
+                    this.showNotification(summary.join(' | '));
+                }
+                
+                // Update results count with smart features info
+                if (this.resultsCount) {
+                    let countText = `About ${data.total_results} results`;
+                    
+                    if (features.spell_check_used || features.query_expansion_used) {
+                        countText += ' (with smart features)';
+                    }
+                    
+                    this.resultsCount.textContent = countText;
+                }
+            }
+            
+            // Enhanced notification system
+            showNotification(message) {
+                // Create or update notification element
+                let notification = document.getElementById('smartFeatureNotification');
+                if (!notification) {
+                    notification = document.createElement('div');
+                    notification.id = 'smartFeatureNotification';
+                    notification.className = 'smart-feature-notification';
+                    document.body.appendChild(notification);
+                }
+                
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <span class="notification-icon">🧠</span>
+                        <span class="notification-text">${message}</span>
+                        <button class="notification-close" onclick="this.parentElement.parentElement.remove()">×</button>
+                    </div>
+                `;
+                
+                notification.classList.add('show');
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    if (notification.parentElement) {
+                        notification.classList.remove('show');
+                        setTimeout(() => {
+                            if (notification.parentElement) {
+                                notification.remove();
+                            }
+                        }, 300);
+                    }
+                }, 5000);
+            }
+        }
+
+        // Initialize the enhanced application
+        document.addEventListener('DOMContentLoaded', () => {
+            window.searchEngine = new EnhancedSmartSearchEngine();
+            
+            // Handle search query from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const query = urlParams.get('q');
+            if (query) {
+                window.searchEngine.searchInput.value = query;
+                window.searchEngine.performSearch(query);
+            }
+            
+            // Add keyboard shortcut hint
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.placeholder = 'Search the web... (Press / to focus)';
+                
+                // Add keyboard shortcut for '/'
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === '/' && e.target !== searchInput) {
+                        e.preventDefault();
+                        searchInput.focus();
+                    }
+                });
+            }
+            
+            console.log('🚀 Enhanced Smart Search Engine initialized!');
+            console.log('Try these demo searches:');
+            console.log('• "serch engin" - See spell correction');
+            console.log('• "car" - See query expansion');
+            console.log('• "web" - See real-time suggestions');
+        });
+
+        // Google Analytics (example)
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID');
+    </script>
+</body>
+</html>

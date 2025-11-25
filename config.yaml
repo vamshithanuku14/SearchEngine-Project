@@ -1,0 +1,48 @@
+project:
+  name: "SearchEngine-Project"
+  version: "1.0.0"
+
+crawler:
+  user_agent: "SearchEngineBot/1.0 (+http://example.com)"
+  concurrent_requests: 16
+  download_delay: 1.0
+  max_pages: 100
+  max_depth: 2
+  timeout: 30
+  auto_throttle: true
+  respected_domains:
+    - "wikipedia.org"
+    - "github.com"
+    - "stackoverflow.com"
+    - "medium.com"
+    - "towardsdatascience.com"
+    - "realpython.com"
+    - "python.org"
+    - "developer.mozilla.org"
+
+indexer:
+  min_word_length: 2
+  max_word_length: 25
+  max_document_frequency: 0.8
+  min_document_frequency: 2
+  vector_embedding_dim: 300
+  use_faiss: true
+  similarity_metric: "cosine"
+
+processor:
+  host: "0.0.0.0"
+  port: 5000
+  debug: false
+  top_k_results: 10
+  enable_spell_check: true
+  enable_query_expansion: true
+  enable_suggestions: true
+  spell_check_confidence_threshold: 0.7
+  max_suggestions: 5
+
+paths:
+  data_raw: "data/raw_html"
+  data_processed: "data/processed"
+  data_index: "data/index"
+  data_queries: "data/queries"
+  data_results: "data/results"

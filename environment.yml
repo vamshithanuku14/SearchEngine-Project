@@ -1,0 +1,26 @@
+name: search-engine
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - pip
+  - scrapy=2.13
+  - scikit-learn=1.6
+  - flask=3.0
+  - nltk=3.8
+  - numpy=1.26
+  - pandas=2.2
+  - beautifulsoup4=4.12
+  - requests=2.31
+  - python-dotenv=1.0
+  - pyyaml=6.0
+  - jsonschema=4.22
+  - faiss-cpu=1.7
+  - gensim=4.3
+  - jieba=0.42
+  - html2text=2020.1.16
+  - tqdm=4.66
+  - pip:
+    - wordnet==0.1.2
+    - spellchecker==0.7.2
