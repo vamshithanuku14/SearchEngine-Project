@@ -17,6 +17,18 @@ class EnhancedQueryValidator:
     
     def __init__(self):
         self.config = Config()
+        
+        # Initialize common_queries BEFORE calling _initialize_enhanced_spell_checker
+        self.common_queries = [
+            "search engine", "web crawling", "information retrieval",
+            "machine learning", "natural language processing", 
+            "tf-idf scoring", "cosine similarity", "inverted index",
+            "web scraping", "document ranking", "text mining",
+            "vector space model", "relevance ranking", "search algorithm",
+            "python programming", "flask web framework", "scrapy framework",
+            "data mining", "big data", "artificial intelligence"
+        ]
+        
         self._initialize_nltk()
         
         # Enhanced validation rules
@@ -32,17 +44,6 @@ class EnhancedQueryValidator:
         # Query expansion cache
         self.expansion_cache = {}
         
-        # Common search patterns and popular queries
-        self.common_queries = [
-            "search engine", "web crawling", "information retrieval",
-            "machine learning", "natural language processing", 
-            "tf-idf scoring", "cosine similarity", "inverted index",
-            "web scraping", "document ranking", "text mining",
-            "vector space model", "relevance ranking", "search algorithm",
-            "python programming", "flask web framework", "scrapy framework",
-            "data mining", "big data", "artificial intelligence"
-        ]
-        
         # Query suggestion history (simulated)
         self.search_history = [
             "search engine", "web crawler", "information retrieval",
@@ -56,7 +57,10 @@ class EnhancedQueryValidator:
         
         for package in required_packages:
             try:
-                nltk.data.find(f'tokenizers/{package}' if package == 'punkt' else f'corpora/{package}')
+                if package == 'punkt':
+                    nltk.data.find(f'tokenizers/{package}')
+                else:
+                    nltk.data.find(f'corpora/{package}')
             except LookupError:
                 nltk.download(package, quiet=True)
         
@@ -455,6 +459,11 @@ class EnhancedQueryValidator:
                 unique_suggestions.append(s)
         
         return unique_suggestions[:max_suggestions]
+    
+    def get_suggestions(self, query: str, max_suggestions: int = 5) -> List[str]:
+        """Backward-compatible method that returns only suggestion strings."""
+        enhanced_suggestions = self.get_enhanced_suggestions(query, max_suggestions)
+        return [suggestion['suggestion'] for suggestion in enhanced_suggestions]
 
 # Maintain backward compatibility
 class QueryValidator(EnhancedQueryValidator):
