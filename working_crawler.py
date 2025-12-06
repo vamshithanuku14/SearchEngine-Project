@@ -49,7 +49,7 @@ class WorkingWebCrawler(scrapy.Spider):
             return
         
         self.pages_crawled += 1
-        print(f"📥 Crawling page {self.pages_crawled}/{self.max_pages}: {response.url}")
+        print(f" Crawling page {self.pages_crawled}/{self.max_pages}: {response.url}")
         
         # Create item manually
         item = {
@@ -73,13 +73,13 @@ class WorkingWebCrawler(scrapy.Spider):
         
         # Check if we should stop
         if self.pages_crawled >= self.max_pages and not self.should_stop:
-            print(f"✅ Reached max pages limit ({self.max_pages})")
+            print(f" Reached max pages limit ({self.max_pages})")
             self.should_stop = True
 
 def main():
     """Main function to run the working crawler."""
     try:
-        print("🌐 WORKING WEB CRAWLER")
+        print(" WORKING WEB CRAWLER")
         print("=" * 50)
         
         # Get user input
@@ -104,12 +104,12 @@ def main():
         process.crawl(WorkingWebCrawler, seed_url=seed_url, max_pages=max_pages)
         process.start()
         
-        print(f"\n✅ Crawling completed! Check data/raw_html/ for downloaded files.")
+        print(f"\n Crawling completed! Check data/raw_html/ for downloaded files.")
         
     except KeyboardInterrupt:
-        print("\n⏹️ Crawler stopped by user")
+        print("\n Crawler stopped by user")
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f" Error: {e}")
         import traceback
         traceback.print_exc()
 
