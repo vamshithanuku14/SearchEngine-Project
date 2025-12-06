@@ -69,7 +69,7 @@ class ContentProcessingPipeline:
             }
             
             self.saved_count += 1
-            logger.info(f"✅ Processed document: {item['document_id']} from {item['domain']} (Total: {self.saved_count})")
+            logger.info(f" Processed document: {item['document_id']} from {item['domain']} (Total: {self.saved_count})")
             return item
             
         except Exception as e:
@@ -86,7 +86,7 @@ class ContentProcessingPipeline:
                 f.write(html_content)
             
             file_size = os.path.getsize(filepath)
-            logger.debug(f"💾 Saved: {filename} ({file_size} bytes)")
+            logger.debug(f" Saved: {filename} ({file_size} bytes)")
             
         except Exception as e:
             logger.error(f"Error saving HTML file {filename}: {str(e)}")
@@ -118,8 +118,8 @@ class ContentProcessingPipeline:
     
     def close_spider(self, spider):
         """Called when spider closes."""
-        logger.info(f"🏁 Pipeline processing completed. Total documents processed: {self.saved_count}")
+        logger.info(f" Pipeline processing completed. Total documents processed: {self.saved_count}")
         
         # Show summary of processed domains
         if hasattr(spider, 'allowed_domains'):
-            logger.info(f"🌐 Domains processed: {spider.allowed_domains}")
+            logger.info(f" Domains processed: {spider.allowed_domains}")
