@@ -20,7 +20,7 @@ def check_scrapy_settings():
         from scrapy.utils.project import get_project_settings
         settings = get_project_settings()
         
-        print("🔧 Scrapy Settings Verification")
+        print(" Scrapy Settings Verification")
         print("=" * 50)
         
         # Check pipelines
@@ -29,18 +29,18 @@ def check_scrapy_settings():
         
         our_pipeline = 'src.crawler.pipelines.ContentProcessingPipeline'
         if our_pipeline in pipelines:
-            print(f"✅ Our pipeline is ENABLED with priority: {pipelines[our_pipeline]}")
+            print(f" Our pipeline is ENABLED with priority: {pipelines[our_pipeline]}")
         else:
-            print(f"❌ Our pipeline is NOT in ITEM_PIPELINES")
+            print(f" Our pipeline is NOT in ITEM_PIPELINES")
             print(f"   Available pipelines: {list(pipelines.keys())}")
         
         # Check other important settings
-        print(f"\n📋 Other Settings:")
+        print(f"\n Other Settings:")
         print(f"   SPIDER_MODULES: {settings.get('SPIDER_MODULES')}")
         print(f"   BOT_NAME: {settings.get('BOT_NAME')}")
         
     except Exception as e:
-        print(f"❌ Settings verification failed: {e}")
+        print(f" Settings verification failed: {e}")
         import traceback
         traceback.print_exc()
 
