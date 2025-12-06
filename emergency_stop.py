@@ -24,9 +24,9 @@ def kill_scrapy_processes():
             subprocess.run(['pkill', '-f', 'scrapy'], 
                          stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         
-        print("✅ Stopped all Scrapy processes")
+        print(" Stopped all Scrapy processes")
     except Exception as e:
-        print(f"❌ Error stopping processes: {e}")
+        print(f" Error stopping processes: {e}")
 
 def create_immediate_samples():
     """Create immediate sample data for testing."""
@@ -63,18 +63,18 @@ def create_immediate_samples():
         filepath = os.path.join('data/raw_html', sample['filename'])
         with open(filepath, 'w', encoding='utf-8') as f:
             f.write(sample['content'])
-        print(f"✅ Created: {filepath}")
+        print(f" Created: {filepath}")
     
-    print("📁 Created emergency sample files")
+    print(" Created emergency sample files")
 
 if __name__ == "__main__":
-    print("🆘 EMERGENCY STOP SCRIPT")
+    print(" EMERGENCY STOP SCRIPT")
     print("=" * 50)
     
     kill_scrapy_processes()
     create_immediate_samples()
     
-    print("\n🎉 Emergency cleanup completed!")
+    print("\n Emergency cleanup completed!")
     print("\nNow run:")
     print("1. python run_indexer.py")
     print("2. python run_processor.py")
