@@ -76,10 +76,10 @@ class WebCrawlerSpider(CrawlSpider):
         
         super()._compile_rules()
         
-        logger.info(f"🚀 Enhanced crawler initialized with {len(self.start_urls)} seed URLs")
-        logger.info(f"🌐 Allowed domains: {self.allowed_domains}")
-        logger.info(f"📄 Max pages: {self.max_pages}")
-        logger.info(f"🔗 Seed URLs: {self.start_urls}")
+        logger.info(f" Enhanced crawler initialized with {len(self.start_urls)} seed URLs")
+        logger.info(f" Allowed domains: {self.allowed_domains}")
+        logger.info(f" Max pages: {self.max_pages}")
+        logger.info(f" Seed URLs: {self.start_urls}")
     
     def process_request(self, request, response):
         """Process each request before it's downloaded with enhanced logging."""
@@ -122,7 +122,7 @@ class WebCrawlerSpider(CrawlSpider):
         self.pages_crawled += 1
         domain = response.meta.get('domain', urlparse(response.url).netloc)
         
-        logger.info(f"📥 Crawling page {self.pages_crawled}/{self.max_pages} from {domain}: {response.url}")
+        logger.info(f" Crawling page {self.pages_crawled}/{self.max_pages} from {domain}: {response.url}")
         
         # Create document item
         item = WebDocumentItem()
@@ -163,24 +163,24 @@ class WebCrawlerSpider(CrawlSpider):
             item['links'] = []
         
         content_length = len(item.get('html_content', ''))
-        logger.debug(f"✅ Extracted content from {response.url}: {content_length} characters")
+        logger.debug(f"Extracted content from {response.url}: {content_length} characters")
         
         yield item
         
         # Force stop if we reached the limit after yielding
         if self.pages_crawled >= self.max_pages and not self.should_stop:
-            logger.info(f"🎯 Reached max pages limit ({self.max_pages}), forcing spider stop")
+            logger.info(f" Reached max pages limit ({self.max_pages}), forcing spider stop")
             self.should_stop = True
             self.crawler.engine.close_spider(self, 'max_pages_reached')
     
     def closed(self, reason):
         """Called when spider closes with enhanced reporting."""
-        logger.info(f"🏁 Crawler finished: {reason}")
-        logger.info(f"📊 Total pages crawled: {self.pages_crawled}")
+        logger.info(f" Crawler finished: {reason}")
+        logger.info(f" Total pages crawled: {self.pages_crawled}")
         
         # Domain distribution report
         if hasattr(self, 'crawler') and hasattr(self.crawler.stats, 'stats'):
             stats = self.crawler.stats.stats
-            logger.info("📈 Crawling Statistics:")
+            logger.info(" Crawling Statistics:")
             for key, value in stats.items():
                 logger.info(f"   {key}: {value}")
