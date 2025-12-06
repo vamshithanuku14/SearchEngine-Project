@@ -16,12 +16,12 @@ def test_pipeline_directly():
     try:
         from crawler.pipelines import ContentProcessingPipeline
         
-        print("🧪 Testing Pipeline Directly")
+        print(" Testing Pipeline Directly")
         print("=" * 50)
         
         # Create pipeline instance
         pipeline = ContentProcessingPipeline()
-        print(f"✅ Pipeline created")
+        print(f" Pipeline created")
         print(f"   Raw HTML path: {pipeline.raw_html_path}")
         print(f"   Directory exists: {os.path.exists(pipeline.raw_html_path)}")
         
@@ -46,7 +46,7 @@ def test_pipeline_directly():
             print(f"   File size: {file_size} bytes")
             
     except Exception as e:
-        print(f"❌ Pipeline test failed: {e}")
+        print(f" Pipeline test failed: {e}")
         import traceback
         traceback.print_exc()
 
@@ -56,19 +56,19 @@ def check_scrapy_settings():
         from scrapy.utils.project import get_project_settings
         settings = get_project_settings()
         
-        print(f"\n🔧 Scrapy Settings Check")
+        print(f"\n Scrapy Settings Check")
         print("=" * 50)
         pipelines = settings.get('ITEM_PIPELINES', {})
         print(f"ITEM_PIPELINES: {pipelines}")
         
         our_pipeline = 'crawler.pipelines.ContentProcessingPipeline'
         if our_pipeline in pipelines:
-            print(f"✅ Our pipeline is enabled with priority: {pipelines[our_pipeline]}")
+            print(f" Our pipeline is enabled with priority: {pipelines[our_pipeline]}")
         else:
-            print(f"❌ Our pipeline is NOT in ITEM_PIPELINES")
+            print(f" Our pipeline is NOT in ITEM_PIPELINES")
             
     except Exception as e:
-        print(f"❌ Settings check failed: {e}")
+        print(f" Settings check failed: {e}")
 
 if __name__ == "__main__":
     test_pipeline_directly()
