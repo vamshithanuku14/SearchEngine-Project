@@ -20,14 +20,14 @@ def enhance_html_files():
     tfidf_path = os.path.join(config.get('paths.data_index'), 'tfidf_vectors.pkl')
     
     if not os.path.exists(index_path):
-        print("❌ Index file not found")
+        print(" Index file not found")
         return
     
     # Load the index
     with open(index_path, 'r', encoding='utf-8') as f:
         index_data = json.load(f)
     
-    print("🔧 Enhancing content extraction and fixing metadata...")
+    print(" Enhancing content extraction and fixing metadata...")
     enhanced_count = 0
     
     for filename in os.listdir(raw_html_dir):
@@ -89,16 +89,16 @@ def enhance_html_files():
                     index_data['document_metadata'][document_id]['enhanced'] = True
                     
                     enhanced_count += 1
-                    print(f"✅ Enhanced: {filename} -> {title_text}")
+                    print(f" Enhanced: {filename} -> {title_text}")
                 
             except Exception as e:
-                print(f"❌ Error processing {filename}: {e}")
+                print(f" Error processing {filename}: {e}")
     
     # Save updated index
     with open(index_path, 'w', encoding='utf-8') as f:
         json.dump(index_data, f, indent=2, ensure_ascii=False)
     
-    print(f"🎉 Enhanced {enhanced_count} documents!")
+    print(f" Enhanced {enhanced_count} documents!")
     
     # Also update TF-IDF vectors if they exist
     if os.path.exists(tfidf_path):
@@ -107,10 +107,10 @@ def enhance_html_files():
                 tfidf_data = pickle.load(f)
             
             # The TF-IDF vectors don't need updating, just confirm they exist
-            print(f"✅ TF-IDF vectors verified: {len(tfidf_data.get('document_vectors', {}))} documents")
+            print(f" TF-IDF vectors verified: {len(tfidf_data.get('document_vectors', {}))} documents")
             
         except Exception as e:
-            print(f"❌ Error with TF-IDF vectors: {e}")
+            print(f" Error with TF-IDF vectors: {e}")
 
 def display_enhanced_results():
     """Show what the enhanced results will look like."""
@@ -120,23 +120,23 @@ def display_enhanced_results():
         with open(index_path, 'r', encoding='utf-8') as f:
             index_data = json.load(f)
         
-        print("\n📊 ENHANCED DOCUMENTS PREVIEW:")
+        print("\n ENHANCED DOCUMENTS PREVIEW:")
         print("=" * 60)
         
         for doc_id, metadata in list(index_data['document_metadata'].items())[:3]:  # Show first 3
-            print(f"\n📄 {metadata.get('title', 'Untitled')}")
-            print(f"   🔗 URL: {metadata.get('url', 'N/A')}")
-            print(f"   📝 Content preview: {metadata.get('content', 'N/A')[:100]}...")
-            print(f"   📊 Word count: {metadata.get('word_count', 0)}")
+            print(f"\n {metadata.get('title', 'Untitled')}")
+            print(f"    URL: {metadata.get('url', 'N/A')}")
+            print(f"    Content preview: {metadata.get('content', 'N/A')[:100]}...")
+            print(f"    Word count: {metadata.get('word_count', 0)}")
 
 if __name__ == "__main__":
-    print("🚀 ENHANCING SEARCH ENGINE CONTENT")
+    print(" ENHANCING SEARCH ENGINE CONTENT")
     print("=" * 60)
     
     enhance_html_files()
     display_enhanced_results()
     
-    print("\n🎯 Next steps:")
+    print("\n Next steps:")
     print("1. Restart the search engine: python run_processor.py")
     print("2. Test searches with improved content and proper URLs")
     print("3. Enjoy your fully functional search engine! 🎉")
