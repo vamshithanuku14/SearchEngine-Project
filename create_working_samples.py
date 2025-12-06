@@ -146,7 +146,7 @@ def create_sample_files():
     # Ensure directory exists
     os.makedirs('data/raw_html', exist_ok=True)
     
-    print("📁 Creating sample HTML files...")
+    print(" Creating sample HTML files...")
     for sample in samples:
         document_id = generate_document_id(sample['url'])
         filename = f"{document_id}.html"
@@ -155,10 +155,10 @@ def create_sample_files():
         with open(filepath, 'w', encoding='utf-8') as f:
             f.write(sample['content'])
         
-        print(f"✅ Created: {filename}")
+        print(f" Created: {filename}")
         print(f"   Title: {sample['title']}")
     
-    print(f"\n🎉 Created {len(samples)} sample HTML files in data/raw_html/")
+    print(f"\n Created {len(samples)} sample HTML files in data/raw_html/")
 
 def create_sample_index():
     """Create a sample search index."""
@@ -244,7 +244,7 @@ def create_sample_index():
     with open(index_path, 'w', encoding='utf-8') as f:
         json.dump(sample_index, f, indent=2, ensure_ascii=False)
     
-    print(f"✅ Created sample index: {index_path}")
+    print(f" Created sample index: {index_path}")
     
     # Create TF-IDF vectors
     tfidf_data = {
@@ -266,22 +266,22 @@ def create_sample_index():
     with open(tfidf_path, 'wb') as f:
         pickle.dump(tfidf_data, f)
     
-    print(f"✅ Created TF-IDF vectors: {tfidf_path}")
+    print(f" Created TF-IDF vectors: {tfidf_path}")
 
 if __name__ == "__main__":
-    print("🚀 CREATING GUARANTEED WORKING SAMPLE DATA")
+    print(" CREATING GUARANTEED WORKING SAMPLE DATA")
     print("=" * 60)
     
     create_sample_files()
     create_sample_index()
     
-    print("\n🎉 SAMPLE DATA CREATION COMPLETED SUCCESSFULLY!")
-    print("\n📋 Files created:")
-    print("   📁 data/raw_html/ - 5 sample HTML files")
-    print("   📊 data/index/inverted_index.json - Search index")
-    print("   📊 data/index/tfidf_vectors.pkl - TF-IDF vectors")
+    print("\n SAMPLE DATA CREATION COMPLETED SUCCESSFULLY!")
+    print("\n Files created:")
+    print("    data/raw_html/ - 5 sample HTML files")
+    print("    data/index/inverted_index.json - Search index")
+    print("    data/index/tfidf_vectors.pkl - TF-IDF vectors")
     
-    print("\n🎯 Next steps:")
+    print("\n Next steps:")
     print("1. Run: python run_indexer.py (to verify processing)")
     print("2. Run: python run_processor.py (to start search engine)")
     print("3. Visit: http://localhost:5000")
